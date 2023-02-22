@@ -27,6 +27,26 @@ client.connect(err => {
   const contactCollection = client.db("procheshta").collection("contacts");
   const joinedCampaignCollection = client.db("procheshta").collection("joinedcampaign");
 
+
+  //For Another Project - PolicyGem
+  const infoCollection = client.db("procheshta").collection("clientinfo");
+    //Client Info Database Section
+    app.post("/clientinfoupload",(req,res)=>{
+      const newInfo = req.body;
+      infoCollection.insertOne(newInfo)
+      .then(result => {
+        res.send(result.insertedCount > 0)
+        res.redirect("/")
+      })
+    })
+
+    app.get("/showclients", (req,res)=>{
+      infoCollection.find()
+      .toArray((err, infos)=>{
+        res.send(infos)
+      })
+    })
+
   console.log("Data base connected");
 
 
